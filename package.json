@@ -1,8 +1,8 @@
 {
   "name": "shopify-theme-cli-dockerized",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "bin": {
     "shopify-theme-cli-dockerized": "./bin/index.js"
   },
