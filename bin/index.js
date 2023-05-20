@@ -49,7 +49,9 @@ async function copyFolderSync(from, to) {
       fs.copyFileSync(path.join(from, element), path.join(to, element))
     })
     await setTimeout(delay)
-    spinner.succeed(".devcontainer files have been created")
+    spinner.succeed(
+      `.devcontainer files have been created in ${path.join(to, "..")}`
+    )
   } catch (err) {
     if (err.code === "EEXIST") {
       await setTimeout(delay)
@@ -64,3 +66,11 @@ async function copyFolderSync(from, to) {
 }
 
 await copyFolderSync(__devcontainer, __devcontainerinstalldir)
+
+console.log("\nInstallation complete:\n")
+console.log(
+  `  1. Ensure Docker Desktop is running\n  2. Open ${path.join(
+    __devcontainerinstalldir,
+    ".."
+  )} in VS Code\n`
+)
