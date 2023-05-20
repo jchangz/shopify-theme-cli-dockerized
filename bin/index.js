@@ -4,10 +4,9 @@ import fs from "fs"
 import path from "path"
 import { fileURLToPath } from "url"
 import { setTimeout } from "timers/promises"
-import chalk from "chalk"
 import ora from "ora"
 
-const chalkError = (err) => `${chalk.white.bgRed.bold("ERROR")} ${err}`
+const spinner = ora().start("Installing")
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const __parentdir = path.join(__dirname, "..")
@@ -23,13 +22,11 @@ if (process.argv.length > 2) {
     fs.mkdirSync(folderPath)
   } catch (err) {
     if (err.code === "EEXIST") {
-      console.log(
-        chalkError(
-          `The folder "${folderPath}" already exists in the current directory, please give it another name.`
-        )
+      spinner.fail(
+        `The folder "${folderPath}" already exists in the current directory, please give it another name.`
       )
     } else {
-      console.log(chalkError(err))
+      spinner.fail(err)
     }
     process.exit(1)
   }
@@ -41,7 +38,8 @@ if (process.argv.length > 2) {
   )
 }
 
-const spinner = ora().start("Copying .devcontainer files")
+spinner.text = "Copying .devcontainer files"
+
 const delay = 500
 
 async function copyFolderSync(from, to) {
@@ -56,12 +54,10 @@ async function copyFolderSync(from, to) {
     if (err.code === "EEXIST") {
       await setTimeout(delay)
       spinner.fail(
-        chalkError(
-          'The directory ".devcontainer" already exists, please remove it'
-        )
+        'The directory ".devcontainer" already exists, please remove it'
       )
     } else {
-      spinner.fail(chalkError(err))
+      spinner.fail(err)
     }
     process.exit(1)
   }
