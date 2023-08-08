@@ -1,10 +1,5 @@
-FROM ruby:buster
-RUN apt-get update \
-  && apt-get upgrade -y \
-  && apt install curl -y \
-  && apt install make -y \
-  && gem install bundler \
-  && curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \
-  && apt-get install -y nodejs \
-  && apt install openssh-client
+FROM alpine:latest
+RUN apk update && apk upgrade \
+  && apk add curl gcc g++ make ruby-full ruby-dev git \
+  && apk add --update nodejs npm
 RUN npm install -g @shopify/cli @shopify/theme
