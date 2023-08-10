@@ -67,10 +67,6 @@ async function copyFolderSync(from, to) {
 
 await copyFolderSync(__devcontainer, __devcontainerinstalldir)
 
-console.log("\nInstallation complete:\n")
-console.log(
-  `  1. Ensure Docker Desktop is running\n  2. Open ${path.join(
-    __devcontainerinstalldir,
-    ".."
-  )} in VS Code\n`
-)
+console.log("\nInstallation complete, ensure Docker Desktop is running. Run:\n")
+if (process.argv.length > 2) console.log(`  cd ${process.argv[2]}`)
+console.log(`  code .\n`)
