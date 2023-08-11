@@ -1,53 +1,50 @@
-<div align="center">
-<h1 align="center">Shopify Theme CLI Dockerized</h1>
+# Shopify Theme CLI Dockerized
+
 Containerized development environment for Shopify themes
-</div>
 
-## Requirements
+## Get Started
 
-[Docker Desktop](https://www.docker.com/products/docker-desktop/)
+### Requirements
 
-[Visual Studio Code](https://code.visualstudio.com/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-[Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+### Installation
 
-## Installation
-
-### Quick start
+Named Folder:
 
 ```console
 npx shopify-theme-cli-dockerized my-app
 ```
 
-### Manually
+Current Directory:
 
-Copy `.devcontainer` folder into your project directory.
+```console
+npx shopify-theme-cli-dockerized
+```
 
-## Usage
+### Verify
 
 1. **Run Docker Desktop**
 
 2. **Open project directory in VS Code.**
 
-   Run
-
-   > <kbd>F1</kbd> + <kbd>Dev Containers: Reopen in Container</kbd>
-   >
-   > or
-   >
-   > <kbd>F1</kbd> + <kbd>Dev Containers: Open Folder in Container</kbd>
+   ```console
+   Dev Containers: Reopen in Container
+   ```
 
 3. **Open integrated terminal**
 
-   <kbd>Terminal</kbd> > <kbd>New Terminal</kbd>
+4. **Verify Shopify CLI is installed**
 
-4. **Verify the installation**
+   ```console
+   shopify version
+   ```
 
-   `shopify version`
+## Usage
 
-   [Shopify CLI Theme Command Reference](https://shopify.dev/docs/themes/tools/cli/commands)
-
-## Get Theme Files
+### Get Theme Files
 
 - Initialize with Shopify's [Dawn Theme](https://github.com/Shopify/dawn)
 
@@ -67,10 +64,14 @@ Copy `.devcontainer` folder into your project directory.
   shopify theme pull --store $YOUR_STORE
   ```
 
-## Start Developing
+### Start Developing
 
 ```console
 shopify theme dev
 ```
 
-More Details: [Developing inside a Container](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container)
+## Documentation
+
+- [Developing inside a Container](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container)
+
+- [Shopify CLI Theme Command Reference](https://shopify.dev/docs/themes/tools/cli/commands)
