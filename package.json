@@ -1,7 +1,7 @@
 {
   "name": "shopify-theme-cli-dockerized",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Containerized development environment for Shopify themes",
   "bin": {
     "shopify-theme-cli-dockerized": "./bin/index.js"
@@ -13,7 +13,11 @@
     "type": "git",
     "url": "git+https://github.com/jchangz/shopify-theme-cli-dockerized.git"
   },
-  "keywords": ["shopify", "shopify-cli", "docker"],
+  "keywords": [
+    "shopify",
+    "shopify-cli",
+    "docker"
+  ],
   "author": "Jian Chang",
   "license": "MIT",
   "bugs": {
