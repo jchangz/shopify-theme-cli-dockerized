@@ -5,8 +5,7 @@ import path from "path"
 import { fileURLToPath } from "url"
 import { setTimeout } from "timers/promises"
 import ora from "ora"
-
-const spinner = ora().start("Installing")
+import inquirer from "inquirer"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const __parentdir = path.join(__dirname, "..")
@@ -14,35 +13,62 @@ const __devcontainer = path.join(__parentdir, ".devcontainer")
 
 const __installdir = process.cwd()
 let __devcontainerinstalldir = path.join(__installdir, ".devcontainer")
+let __folderpathname
 
-if (process.argv.length > 2) {
-  const folderPath = process.argv[2]
+const q1 = await inquirer
+  .prompt([
+    {
+      name: "installType",
+      message: "Choose your installation directory",
+      type: "list",
+      choices: ["Current directory", "New named folder"],
+    },
+  ])
+  .then((answer) => {
+    const { installType } = answer
+    if (installType === "New named folder") return true
+    return false
+  })
 
-  try {
-    fs.mkdirSync(folderPath)
-  } catch (err) {
-    if (err.code === "EEXIST") {
-      spinner.fail(
-        `The folder "${folderPath}" already exists in the current directory, please give it another name.`
+if (q1) {
+  __folderpathname = await inquirer
+    .prompt([
+      {
+        name: "folderPath",
+        type: "input",
+        message: "Your directory name?",
+        default: "my-app",
+      },
+    ])
+    .then((answer) => {
+      const { folderPath } = answer
+      try {
+        fs.mkdirSync(folderPath)
+      } catch (err) {
+        if (err.code === "EEXIST") {
+          console.log(
+            `The folder "${folderPath}" already exists in the current directory, please give it another name`
+          )
+        } else {
+          console.log(err)
+        }
+        process.exit(1)
+      }
+      __devcontainerinstalldir = path.join(
+        __installdir,
+        folderPath,
+        ".devcontainer"
       )
-    } else {
-      spinner.fail(err)
-    }
-    process.exit(1)
-  }
 
-  __devcontainerinstalldir = path.join(
-    __installdir,
-    folderPath,
-    ".devcontainer"
-  )
+      return folderPath
+    })
 }
 
-spinner.text = "Copying .devcontainer files"
+const spinner = ora().start("Copying .devcontainer files")
 
-const delay = 500
+async function copyFolderSync(from, to, spinner) {
+  const delay = 500
 
-async function copyFolderSync(from, to) {
   try {
     fs.mkdirSync(to)
     fs.readdirSync(from).forEach((element) => {
@@ -65,8 +91,8 @@ async function copyFolderSync(from, to) {
   }
 }
 
-await copyFolderSync(__devcontainer, __devcontainerinstalldir)
+await copyFolderSync(__devcontainer, __devcontainerinstalldir, spinner)
 
 console.log("\nInstallation complete, ensure Docker Desktop is running. Run:\n")
-if (process.argv.length > 2) console.log(`  cd ${process.argv[2]}`)
+if (__folderpathname) console.log(`  cd ${__folderpathname}`)
 console.log(`  code .\n`)
