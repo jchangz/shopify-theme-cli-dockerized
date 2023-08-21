@@ -31,37 +31,37 @@ const q1 = await inquirer
   })
 
 if (q1) {
-  __folderpathname = await inquirer
-    .prompt([
-      {
-        name: "folderPath",
-        type: "input",
-        message: "Your directory name?",
-        default: "my-app",
-      },
-    ])
-    .then((answer) => {
-      const { folderPath } = answer
-      try {
-        fs.mkdirSync(folderPath)
-      } catch (err) {
-        if (err.code === "EEXIST") {
-          console.log(
-            `The folder "${folderPath}" already exists in the current directory, please give it another name`
-          )
-        } else {
-          console.log(err)
+  while (!__folderpathname) {
+    await inquirer
+      .prompt([
+        {
+          name: "folderPath",
+          type: "input",
+          message: "Your directory name?",
+          default: "my-app",
+        },
+      ])
+      .then((answer) => {
+        const { folderPath } = answer
+        try {
+          fs.mkdirSync(folderPath)
+          __folderpathname = folderPath
+        } catch (err) {
+          if (err.code === "EEXIST") {
+            console.log(
+              `The folder "${folderPath}" already exists in the current directory, please give it another name`
+            )
+          } else {
+            console.log(err)
+          }
         }
-        process.exit(1)
-      }
-      __devcontainerinstalldir = path.join(
-        __installdir,
-        folderPath,
-        ".devcontainer"
-      )
-
-      return folderPath
-    })
+        __devcontainerinstalldir = path.join(
+          __installdir,
+          folderPath,
+          ".devcontainer"
+        )
+      })
+  }
 }
 
 const spinner = ora().start("Copying .devcontainer files")
