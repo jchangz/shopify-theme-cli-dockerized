@@ -43,7 +43,7 @@ if (installType === "new") {
       } catch (err) {
         if (err.code === "EEXIST") {
           console.log(
-            `The folder "${folderPath}" already exists in the current directory, please try another name`
+            `The folder "${folderPath}" already exists in the current directory, please try another name\n`
           )
         } else {
           console.log(err)
@@ -76,7 +76,7 @@ async function copyFolderSync(from, to, spinner) {
     if (err.code === "EEXIST") {
       await setTimeout(delay)
       spinner.fail(
-        'The directory ".devcontainer" already exists, please remove it before installing'
+        'The directory ".devcontainer" already exists, please remove it before installing\n'
       )
     } else {
       spinner.fail(err)
@@ -87,6 +87,10 @@ async function copyFolderSync(from, to, spinner) {
 
 await copyFolderSync(__devcontainer, __devcontainerinstalldir, spinner)
 
+console.group()
 console.log("\nInstallation complete, ensure Docker Desktop is running. Run:\n")
-if (__folderpathname) console.log(`  cd ${__folderpathname}`)
-console.log(`  code .\n`)
+console.group()
+if (__folderpathname) console.log(`cd ${__folderpathname}`)
+console.log(`code .\n`)
+console.groupEnd()
+console.groupEnd()
