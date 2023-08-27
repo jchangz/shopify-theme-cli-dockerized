@@ -6,6 +6,7 @@ import { fileURLToPath } from "url"
 import { setTimeout } from "timers/promises"
 import ora from "ora"
 import { select, input } from "@inquirer/prompts"
+import { installQuestions, folderNameQuestion } from "./questions.js"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const __parentdir = path.join(__dirname, "..")
@@ -15,28 +16,11 @@ const __installdir = process.cwd()
 let __devcontainerinstalldir = path.join(__installdir, ".devcontainer")
 let __folderpathname
 
-const installType = await select({
-  message: "Choose your installation directory",
-  choices: [
-    {
-      name: "Current directory",
-      value: "current",
-      description: "Create files in this directory",
-    },
-    {
-      name: "New folder",
-      value: "new",
-      description: "Create files in a new named folder in this directory",
-    },
-  ],
-})
+const installType = await select(installQuestions)
 
 if (installType === "new") {
   while (!__folderpathname) {
-    await input({
-      message: "Enter your folder name",
-      default: "my-app",
-    }).then((folderPath) => {
+    await input(folderNameQuestion).then((folderPath) => {
       try {
         fs.mkdirSync(folderPath)
         __folderpathname = folderPath
