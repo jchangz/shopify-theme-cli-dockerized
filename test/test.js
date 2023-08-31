@@ -19,24 +19,22 @@ const __devcontainerinstalldir = path.join(installDirectory, ".devcontainer")
 
 describe("Installation", () => {
   beforeAll(() => {
-    describe("Create test directory", () => {
-      fs.mkdirSync(installDirectory)
-    })
+    fs.mkdirSync(installDirectory)
   })
 
   afterAll(() => {
     fs.rmSync(installDirectory, { recursive: true })
   })
 
-  describe(`Create test directory /${testName}`, () => {
-    it(`Expect true if it exists`, () => {
+  describe(`Check test directory /${testName}`, () => {
+    it(`should exist`, () => {
       const dirExists = fs.existsSync(installDirectory)
       expect(dirExists).toBe(true)
     })
   })
 
   describe("Install in current directory", () => {
-    it("Select 'Current directory' option", async () => {
+    it("selects 'Current directory' option", async () => {
       const { answer, events, getScreen } = await render(
         select,
         installQuestions
@@ -47,7 +45,7 @@ describe("Installation", () => {
         `"? Choose your installation directory Current directory"`
       )
     })
-    it("Expect true when files are successfully copied", async () => {
+    it("should be true when .devcontainer files are copied", async () => {
       const spinner = ora().start("Copying .devcontainer files")
       const install = await copyFolderSync(
         __devcontainer,
@@ -59,16 +57,16 @@ describe("Installation", () => {
     describe("Verify Installation", () => {
       describe(`${testName}/.devcontainer`, () => {
         const __devcontainer = path.join(installDirectory, ".devcontainer")
-        it("Directory should exist", () => {
+        it("checks if .devcontainer directory exists", () => {
           const dirExists = fs.existsSync(__devcontainer)
           expect(dirExists).toBe(true)
         })
-        it("Dockerfile should exist", () => {
+        it("checks for Dockerfile", () => {
           const __dir = path.join(__devcontainer, "Dockerfile")
           const dirExists = fs.existsSync(__dir)
           expect(dirExists).toBe(true)
         })
-        it(".devcontainer.json should exist", () => {
+        it("checks for .devcontainer.json", () => {
           const __dir = path.join(__devcontainer, "devcontainer.json")
           const dirExists = fs.existsSync(__dir)
           expect(dirExists).toBe(true)
@@ -78,7 +76,7 @@ describe("Installation", () => {
   })
 
   describe("Install in nested directory", () => {
-    it("Select 'New folder' option", async () => {
+    it("selects 'New folder' option", async () => {
       const { answer, events, getScreen } = await render(
         select,
         installQuestions
@@ -90,7 +88,7 @@ describe("Installation", () => {
         `"? Choose your installation directory New folder"`
       )
     })
-    it("Select default 'my-app' as folder name", async () => {
+    it("selects default 'my-app' as folder name", async () => {
       const { answer, events, getScreen } = await render(
         input,
         folderNameQuestion
@@ -101,15 +99,13 @@ describe("Installation", () => {
         `"? Enter your folder name my-app"`
       )
     })
-    describe(`Create my-app directory`, () => {
-      it(`Expect true if it exists`, () => {
-        const my_app_directory = path.join(__parentdir, testName, appName)
-        fs.mkdirSync(my_app_directory)
-        const dirExists = fs.existsSync(my_app_directory)
-        expect(dirExists).toBe(true)
-      })
+    it(`creates 'my-app' folder and checks if it exists`, () => {
+      const my_app_directory = path.join(__parentdir, testName, appName)
+      fs.mkdirSync(my_app_directory)
+      const dirExists = fs.existsSync(my_app_directory)
+      expect(dirExists).toBe(true)
     })
-    it("Expect true when files are successfully copied", async () => {
+    it("should be true when .devcontainer files are copied", async () => {
       const spinner = ora().start("Copying .devcontainer files")
       const __newdevcontainerinstalldir = path.join(
         __parentdir,
@@ -131,16 +127,16 @@ describe("Installation", () => {
           appName,
           ".devcontainer"
         )
-        it("Directory should exist", () => {
+        it("checks if .devcontainer directory exists", () => {
           const dirExists = fs.existsSync(__devcontainer)
           expect(dirExists).toBe(true)
         })
-        it("Dockerfile should exist", () => {
+        it("checks for Dockerfile", () => {
           const __dir = path.join(__devcontainer, "Dockerfile")
           const dirExists = fs.existsSync(__dir)
           expect(dirExists).toBe(true)
         })
-        it(".devcontainer.json should exist", () => {
+        it("checks for .devcontainer.json", () => {
           const __dir = path.join(__devcontainer, "devcontainer.json")
           const dirExists = fs.existsSync(__dir)
           expect(dirExists).toBe(true)
