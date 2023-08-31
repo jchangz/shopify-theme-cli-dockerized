@@ -29,6 +29,7 @@ export async function copyFolderSync(from, to, spinner) {
     spinner.succeed(
       `.devcontainer files have been created in ${path.join(to, "..")}`
     )
+    return true
   } catch (err) {
     if (err.code === "EEXIST") {
       await setTimeout(delay)
