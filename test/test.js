@@ -33,6 +33,18 @@ describe("Installation", () => {
     })
   })
 
+  describe('Test createFolderPath', () => {
+    it('should be undefined when path exists', async () => {
+      const testFolder = await createFolderPath(testName)
+      expect(testFolder).toBeUndefined()
+    })
+    it('should return new folder name', async () => {
+      process.chdir(installDirectory)
+      const testFolder = await createFolderPath('folder')
+      expect(testFolder).toBe('folder')
+    })
+  })
+
   describe("Install in current directory", () => {
     it("selects 'Current directory' option", async () => {
       const { answer, events, getScreen } = await render(
