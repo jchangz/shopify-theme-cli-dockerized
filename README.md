@@ -12,14 +12,6 @@ Containerized development environment for Shopify themes
 
 ### Installation
 
-Named Folder:
-
-```console
-npx shopify-theme-cli-dockerized my-app
-```
-
-Current Directory:
-
 ```console
 npx shopify-theme-cli-dockerized
 ```
